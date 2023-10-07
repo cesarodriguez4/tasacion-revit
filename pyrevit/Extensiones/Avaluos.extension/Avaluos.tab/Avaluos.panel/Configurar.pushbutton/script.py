@@ -1,24 +1,24 @@
-"""Calculates total volume of all walls in the model."""
+from rpw.ui.forms import (FlexForm, Label, ComboBox, TextBox, TextBox, Separator, Button)
 
-from Autodesk.Revit import DB
-
-
-doc = __revit__.ActiveUIDocument.Document
-
-
-# Creating collector instance and collecting all the walls from the model
-wall_collector = DB.FilteredElementCollector(doc)\
-                   .OfCategory(DB.BuiltInCategory.OST_Walls)\
-                   .WhereElementIsNotElementType()
-
-
-# Iterate over wall and collect Volume data
-total_volume = 0.0
-
-for wall in wall_collector:
-    vol_param = wall.Parameter[DB.BuiltInParameter.HOST_VOLUME_COMPUTED]
-    if vol_param:
-        total_volume = total_volume + vol_param.AsDouble()
-
-# now that results are collected, print the total
-print("Total Volume is: {}".format(total_volume))
+components = [Label('Estado:'),  ComboBox('depreciacion', 
+                                                         {
+                                                             'Optimo': 0.0,
+                                                              'Muy bueno': 0.032,
+                                                              'Bueno': 2.52,
+                                                              'Intermedio': 8.09,
+                                                              'Regular': 18.10,
+                                                              'Deficiente': 32.20,
+                                                              'Malo': 52.60,
+                                                              'Muy malo': 72.20,
+                                                              'Demolicion': 100
+                                                         }
+                                                         ),
+              Label("Vida probable (Years):"),
+              TextBox('vida_probable', Text="75"),
+              Label("Antiguedad (Years):"),
+              TextBox('antiguedad', Text="43"),
+              Separator(),
+               Button('Aceptar')
+            ]
+form = FlexForm('Configurar parametros del avaluo', components)
+form.show()
