@@ -1,6 +1,8 @@
 from avaluos import Avaluos
 
-avaluos = Avaluos(1, 1, 1, 1)
+# Current doc in Revit
+doc = __revit__.ActiveUIDocument.Document
+avaluo = Avaluos(doc, 1, 1, 1, 1)
 
 # now that results are collected, print the total
-print(avaluos.hello_world())
+print(avaluo.print_table())
