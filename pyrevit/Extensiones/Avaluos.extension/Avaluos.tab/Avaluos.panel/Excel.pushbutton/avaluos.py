@@ -1,6 +1,6 @@
 # coding: utf8
 
-from Autodesk.Revit.DB import FilteredElementCollector, FamilySymbol, FamilyInstance, BuiltInCategory
+from Autodesk.Revit.DB import FilteredElementCollector, FamilySymbol, FamilyInstance
 from pyrevit import script
 
 class Avaluos:
@@ -46,24 +46,3 @@ class Avaluos:
                 if not found:
                     instances_with_costs.append([family_name, 1, cost_parameter_value, cost_parameter_value])
         return instances_with_costs
-    
-    
-    
-    def get_walls_length(self):
-        # Obtenemos todas las paredes en el documento
-        walls = FilteredElementCollector(self.doc).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsNotElementType().ToElements()
-        # Sumar la longitud de todas las paredes
-        total_length = 0
-        print(walls[0].LookupParameter("Length"))
-          
-    def print_table(self):
-        data = self.get_family_instances_with_costs()
-        # instances_with_costs = [Name, Number of items, Cost, total cost]
-        # sum all total cost in instances_with_costs
-        total_costs = 0
-        for instance_with_cost in data:
-            total_costs += instance_with_cost[3]
-    
-        output = script.get_output()    
-        output.print_table(data, title='Resúmen de costos' , columns=["Elemento", "Cantidad", "Costo", "Total"])
-        print("Costos totales", total_costs, ' USD')
