@@ -5,12 +5,13 @@ from pyrevit import script
 
 class Avaluos:
     
-    def __init__(self, doc, coef, antiguedad, vida_probable, long_paredes):
+    def __init__(self, doc, coef, antiguedad, vida_probable, area):
         self.coef = coef
         self.antiguedad = antiguedad
         self.vida_probable = vida_probable
-        self.long_paredes = long_paredes
+        self.area = area
         self.doc = doc
+        self.usd_ves = 33
            
     def get_family_instances_with_costs(self):
         # Obtenemos todos los tipos de familia en Revit
@@ -55,15 +56,39 @@ class Avaluos:
         # Sumar la longitud de todas las paredes
         total_length = 0
         print(walls[0].LookupParameter("Length"))
-          
-    def print_table(self):
-        data = self.get_family_instances_with_costs()
-        # instances_with_costs = [Name, Number of items, Cost, total cost]
-        # sum all total cost in instances_with_costs
+        
+        
+    def get_total_cost_as_new(self, data):
         total_costs = 0
         for instance_with_cost in data:
             total_costs += instance_with_cost[3]
-    
+        return total_costs
+          
+    def print_costs_as_new_table(self):
+        data = self.get_family_instances_with_costs()
+        total_costs = self.get_total_cost_as_new(data)   
         output = script.get_output()    
         output.print_table(data, title='Resúmen de costos' , columns=["Elemento", "Cantidad", "Costo", "Total"])
-        print("Costos totales", total_costs, ' USD')
+        output.print_md("Total VES: **{}** VES".format(total_costs * self.usd_ves))
+        output.print_md("Total USD: **{}** USD".format(total_costs))
+        
+    def print_deprecation_table(self):
+        data = self.get_family_instances_with_costs()
+        total_costs = self.get_total_cost_as_new(data)   
+        deprecation_cost = self.ross_heidecke(total_costs)
+        output = script.get_output()
+        output.print_md("**Cálculo de depreciación por Ross-Heidecke**")
+        output.print_image(r'C:\Users\cesar\source\repos\tasacion-revit\pyrevit\Extensiones\Avaluos.extension\Avaluos.tab\Avaluos.panel\Calcular.pushbutton\rossheidecke.png')
+        output.print_md("Valor actual VES: **{}** VES".format(deprecation_cost * self.usd_ves))
+        output.print_md("Valor actual USD: **{}** USD".format(deprecation_cost))
+        output.print_md("Costo por metro cuadrado: **{}** USD".format(deprecation_cost / self.area))
+        
+    
+        
+    def ross_heidecke(self, value_as_new):
+        e_factor = (100 - self.coef) / 100
+        x = self.antiguedad
+        n = self.vida_probable
+        return value_as_new *(1 - 1/2*((x/n)+(x**2/n**2))) * e_factor
+    
+        
