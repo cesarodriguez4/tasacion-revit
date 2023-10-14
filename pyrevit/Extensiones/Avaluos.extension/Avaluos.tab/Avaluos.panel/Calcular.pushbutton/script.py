@@ -30,11 +30,21 @@ if 'depreciacion' in saved_values:
     coef_depreciacion = float(saved_values['depreciacion'])
 else:
     Alert('Debe registrar un coeficiente de depreciacion a la vivienda en ajustes', "Atencion")
+    
+if 'costo_paredes' in saved_values:
+    costo_paredes = float(saved_values['costo_paredes'])
+else:
+    Alert('Debe registrar un costo de paredes a la vivienda en ajustes', "Atencion")
+    
+if 'costo_techo' in saved_values:
+    costo_techo = float(saved_values['costo_techo'])
+else:
+    Alert('Debe registrar un costo de techo a la vivienda en ajustes', "Atencion")
   
     
 # Current doc in Revit
 doc = __revit__.ActiveUIDocument.Document
-avaluo = Avaluos(doc, coef_depreciacion, antiguedad, vida_probable, area)
+avaluo = Avaluos(doc, coef_depreciacion, antiguedad, vida_probable, area, costo_paredes, costo_techo)
 
 # now that results are collected, print the total
 print(avaluo.print_costs_as_new_table())

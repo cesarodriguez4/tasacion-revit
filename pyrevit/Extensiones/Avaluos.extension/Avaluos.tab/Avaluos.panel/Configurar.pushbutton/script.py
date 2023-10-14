@@ -10,6 +10,8 @@ vida_probable = "Sin definir"
 antiguedad = "Sin definir"
 area = "Sin definir"
 depreciacion = None
+costo_paredes = "Sin definir"
+costo_techo = "Sin definir"
 estado = {
             'Optimo': 0.0,
             'Muy bueno': 0.032,
@@ -30,6 +32,10 @@ if 'area' in saved_values:
     area = saved_values['area']
 if 'depreciacion' in saved_values:
     depreciacion = list(estado.keys())[list(estado.values()).index(saved_values['depreciacion'])]
+if 'costo_paredes' in saved_values:
+    costo_paredes = saved_values['costo_paredes']
+if 'costo_techo' in saved_values:
+    costo_techo = saved_values['costo_techo']
 
 components = [
               Label('Estado de conservación:'),
@@ -40,6 +46,10 @@ components = [
               TextBox('antiguedad', Text=antiguedad),
               Label("Área tapada (m3):"),
               TextBox('area', Text=area),
+              Label("Costo de paredes por m2:"),
+              TextBox('costo_paredes', Text=costo_paredes),
+              Label("Costo de techo por m2:"),
+              TextBox('costo_techo', Text=costo_techo),
               Separator(),
               Button('Aceptar')
             ]

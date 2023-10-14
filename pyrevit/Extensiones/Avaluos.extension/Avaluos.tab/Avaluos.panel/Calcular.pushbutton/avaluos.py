@@ -5,13 +5,15 @@ from pyrevit import script
 
 class Avaluos:
     
-    def __init__(self, doc, coef, antiguedad, vida_probable, area):
+    def __init__(self, doc, coef, antiguedad, vida_probable, area, costo_paredes, costo_techo):
         self.coef = coef
         self.antiguedad = antiguedad
         self.vida_probable = vida_probable
         self.area = area
         self.doc = doc
         self.usd_ves = 33
+        self.costo_paredes = costo_paredes
+        self.costo_techo = costo_techo
            
     def get_family_instances_with_costs(self):
         # Obtenemos todos los tipos de familia en Revit
@@ -62,13 +64,24 @@ class Avaluos:
         total_costs = 0
         for instance_with_cost in data:
             total_costs += instance_with_cost[3]
+        sum_paredes = self.area * self.costo_paredes
+        sum_techo = self.area * self.costo_techo
+        total_costs += sum_paredes + sum_techo
         return total_costs
           
     def print_costs_as_new_table(self):
         data = self.get_family_instances_with_costs()
-        total_costs = self.get_total_cost_as_new(data)   
+        data_m2 = []
+        total_costs = self.get_total_cost_as_new(data) 
+        sum_paredes = self.area * self.costo_paredes
+        sum_techo = self.area * self.costo_techo
+        data_with_paredes = ["Paredes", self.area, self.costo_paredes, sum_paredes]
+        data_with_techo = ["Techo", self.area, self.costo_techo, sum_techo]
+        data_m2.append(data_with_paredes)
+        data_m2.append(data_with_techo)  
         output = script.get_output()    
-        output.print_table(data, title='Resúmen de costos' , columns=["Elemento", "Cantidad", "Costo", "Total"])
+        output.print_table(data, title='Resúmen de costos' , columns=["Material", "Cantidad", "Costo", "Total"])
+        output.print_table(data_m2, title='Resúmen de partidas de construcción por m2' , columns=["Detalle", "Area", "Costo por m3", "Total"])
         output.print_md("Total VES: **{}** VES".format(total_costs * self.usd_ves))
         output.print_md("Total USD: **{}** USD".format(total_costs))
         
