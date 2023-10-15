@@ -1,0 +1,378 @@
+{
+  "Uuid": "e32e1788-eb97-4192-bc27-90f67691ecb1",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "Calculo de depreciacion por ross-heidecke",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleInput, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "InputValue": 1010.0,
+      "Id": "921a159810a9469bb143faa0087a0715",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "937062eeaf294d54977734ed61afbbd3",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Crea un número"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleInput, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "InputValue": 142.0,
+      "Id": "b74552abca444e16bfa49e4a60b360c2",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "eb93734cd15e40f6b4ad0917734b9234",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Crea un número"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Carga las bibliotecas de DesignScript y normas de Python.\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Las entradas de este nodo se almacenan como lista en las variables IN.\r\ndataEnteringNode = IN\r\n\r\n# Incluya el código debajo de esta línea\r\ncosto_construccion = float(IN[0])\r\narea = float(IN[1])\r\ncoef_depreciacion = float(IN[2])\r\nvida_probable = float(IN[3])\r\nantiguedad = float(IN[4])\r\n\r\ndef ross_heidecke(value_as_new):\r\n  e_factor = (100 - coef_depreciacion) / 100\r\n  x = antiguedad\r\n  n = vida_probable\r\n  b = 1 - (0.5*((x/n)+(x**x/n**x)))\r\n  return value_as_new * b * e_factor\r\n  \r\ndef value_as_new():\r\n   return costo_construccion * area\r\n   \r\nva = ross_heidecke(value_as_new())\r\n\r\n# Asigne la salida a la variable OUT.\r\nOUT = \"Valor actual (depreciado): \" + str(va) + \" USD\"",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "e0771619a1674142bb1a8dcb52350df6",
+      "Inputs": [
+        {
+          "Id": "13fc3e3c048542f5a4a35cec83520f55",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2f2546f7535f412aa8ac816b7689dc02",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "067e993157ca4da4b6f351ad3c287778",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "98081e7ed98144c4a487a911adaad36d",
+          "Name": "IN[3]",
+          "Description": "Input #3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6d08a3393d314a609c55e69197f4514b",
+          "Name": "IN[4]",
+          "Description": "Input #4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ceb4b4379fd44daa985afbe94563889c",
+          "Name": "OUT",
+          "Description": "Resultado de la secuencia de comandos de Python",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Ejecuta una secuencia de comandos de Python incrustada."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleInput, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "InputValue": 8.09,
+      "Id": "081b397683544060928f83092d8bcabe",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "89b3eb824975445fa0d9070ca2ce742d",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Crea un número"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleInput, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "InputValue": 60.0,
+      "Id": "024241e0263c4005ae30f5227ce4c4ac",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "5b67bedc1ac345f0b0d3d7fa7a3906b4",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Crea un número"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DoubleInput, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Double",
+      "InputValue": 43.0,
+      "Id": "1369523fe95242ebaddda0de0ea34e8c",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d2d463b825ff4ef4afc8e59028badc89",
+          "Name": "",
+          "Description": "Double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Crea un número"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "b1deff20d77943b6b6b03ed6bb0e5837",
+      "Inputs": [
+        {
+          "Id": "33e69b50eb3640fb83d19b51fcc94aa0",
+          "Name": "",
+          "Description": "Nodo desde el que se mostrará la salida",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ae5c78df027943a486439572b380a7a0",
+          "Name": "",
+          "Description": "Salida del nodo",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualice la salida del nodo."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "937062eeaf294d54977734ed61afbbd3",
+      "End": "13fc3e3c048542f5a4a35cec83520f55",
+      "Id": "d6cf82376a81462f92cade2fb5d317ab",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "eb93734cd15e40f6b4ad0917734b9234",
+      "End": "2f2546f7535f412aa8ac816b7689dc02",
+      "Id": "c6e9dc0917c94f0f8bfa139bb2cf428c",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "ceb4b4379fd44daa985afbe94563889c",
+      "End": "33e69b50eb3640fb83d19b51fcc94aa0",
+      "Id": "317c4ae016d94ef389cdc2646677228a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "89b3eb824975445fa0d9070ca2ce742d",
+      "End": "067e993157ca4da4b6f351ad3c287778",
+      "Id": "2eab9b36a12f432fa672a56512464364",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "5b67bedc1ac345f0b0d3d7fa7a3906b4",
+      "End": "98081e7ed98144c4a487a911adaad36d",
+      "Id": "59c5e705654b46d3b6a83293f4e694a7",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "d2d463b825ff4ef4afc8e59028badc89",
+      "End": "6d08a3393d314a609c55e69197f4514b",
+      "Id": "68d08a70499b47e18ae62635167fe889",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "2.13",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "2.0",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "Ninguno",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.13.1.3887",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Vista preliminar en segundo plano",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Costo de construcción / m2 (USD)",
+        "ShowGeometry": true,
+        "Id": "921a159810a9469bb143faa0087a0715",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 179.5,
+        "Y": 42.75
+      },
+      {
+        "Name": "Área de construcción ",
+        "ShowGeometry": true,
+        "Id": "b74552abca444e16bfa49e4a60b360c2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 214.0,
+        "Y": 209.25
+      },
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "e0771619a1674142bb1a8dcb52350df6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 611.5,
+        "Y": 176.25
+      },
+      {
+        "Name": "Coeficiente de depreciación",
+        "ShowGeometry": true,
+        "Id": "081b397683544060928f83092d8bcabe",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 176.19732937685455,
+        "Y": 373.90949554896133
+      },
+      {
+        "Name": "Vida probable (Años)",
+        "ShowGeometry": true,
+        "Id": "024241e0263c4005ae30f5227ce4c4ac",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 182.4977430003272,
+        "Y": 539.55748227191168
+      },
+      {
+        "Name": "Antigüedad (Años)",
+        "ShowGeometry": true,
+        "Id": "1369523fe95242ebaddda0de0ea34e8c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 207.52353378819714,
+        "Y": 693.86832183067156
+      },
+      {
+        "Name": "Watch",
+        "ShowGeometry": true,
+        "Id": "b1deff20d77943b6b6b03ed6bb0e5837",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 883.2476114981929,
+        "Y": 150.02898735793352
+      }
+    ],
+    "Annotations": [],
+    "X": 158.9649666097643,
+    "Y": 14.764106727799344,
+    "Zoom": 0.67483165842686454
+  }
+}
