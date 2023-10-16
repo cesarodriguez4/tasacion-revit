@@ -67,13 +67,15 @@ class Avaluos:
         
     def print_deprecation_table(self):
         total_costs = self.get_total_cost_as_new() 
-        deprecation_cost = self.ross_heidecke(total_costs)
+        valor_actual = self.ross_heidecke(total_costs)
         output = script.get_output()
         output.print_md("**Cálculo de depreciación por Ross-Heidecke**")
         output.print_image(r'C:\Users\cesar\source\repos\tasacion-revit\pyrevit\Extensiones\Avaluos.extension\Avaluos.tab\Avaluos.panel\Calcular.pushbutton\rossheidecke.png')
-        output.print_md("Valor actual VES: **{}** VES".format(deprecation_cost * self.usd_ves))
-        output.print_md("Valor actual USD: **{}** USD".format(deprecation_cost))
-        output.print_md("Costo por metro cuadrado: **{}** USD".format(deprecation_cost / self.area))
+        output.print_md("Valor actual VES: **{}** VES".format(valor_actual * self.usd_ves))
+        output.print_md("Valor actual USD: **{}** USD".format(valor_actual))
+        output.print_md("Depreciación VES: **{}** VES".format((total_costs - valor_actual) * self.usd_ves))
+        output.print_md("Depreciación: **{}** USD".format(total_costs - valor_actual))
+        output.print_md("Costo por metro cuadrado: **{}** USD".format(valor_actual / self.area))
         
     
         
@@ -81,7 +83,7 @@ class Avaluos:
         e_factor = (100 - self.coef) / 100
         x = self.antiguedad
         n = self.vida_probable
-        b = 1 - (0.5*((x/n)+(x**x/n**x)))
+        b = 1 - (0.5*((x/n)+(x**2/n**2)))
         return value_as_new * b * e_factor
     
         
