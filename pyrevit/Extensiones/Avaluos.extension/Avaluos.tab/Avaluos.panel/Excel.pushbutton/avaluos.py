@@ -81,7 +81,7 @@ class Avaluos:
         e_factor = (100 - self.coef) / 100
         x = self.antiguedad
         n = self.vida_probable
-        b = 1 - (0.5*((x/n)+(x**x/n**x)))
+        b = 1 - (0.5*((x/n)+(x**2/n**2)))
         return value_as_new * b * e_factor
     
         
